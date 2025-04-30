@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Do You Love Me?</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom CSS for animations and background */
+        body {
+            overflow: hidden;
+            background: linear-gradient(to bottom, #2e1065, #7c3aed);
+        }
+
+        /* Animated hearts background */
+        .heart-bg {
+            position: absolute;
+            background: #f43f5e;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0); opacity: 0.5; }
+            50% { transform: translateY(-100vh); opacity: 0.2; }
+            100% { transform: translateY(-200vh); opacity: 0; }
+        }
+
+        /* Fade-in animation */
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 2s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Glow effect for text */
+        .glow-text {
+            text-shadow: 0 0 10px rgba(236, 72, 153, 0.8), 0 0 20px rgba(236, 72, 153, 0.5);
+        }
+
+        /* Emoji animation */
+        .emoji {
+            transition: transform 0.5s ease;
+        }
+
+        .emoji.happy {
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .emoji.cry {
+            transform: scale(1.2) rotate(-10deg);
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen text-white">
+    <!-- Main content -->
+    <div class="text-center z-10 max-w-lg mx-auto">
+        
+
+        <!-- Question -->
+        <h1 class="text-3xl md:text-5xl font-bold mb-10 text-pink-200 glow-text fade-in" style="animation-delay: 0.5s;">
+            Do You Love Me?
+        </h1>
+
+        <!-- Buttons -->
+        <div class="flex justify-center space-x-6 mb-8">
+            <button id="yesBtn" class="px-6 py-3 bg-pink-500 text-white rounded-full text-lg font-semibold hover:bg-pink-600 transition duration-300 shadow-lg">
+                Yes
+            </button>
+            <button id="noBtn" class="px-6 py-3 bg-purple-500 text-white rounded-full text-lg font-semibold hover:bg-purple-600 transition duration-300 shadow-lg">
+                No
+            </button>
+        </div>
+
+        <!-- Response area -->
+        <div id="response" class="h-32 flex flex-col items-center justify-center">
+            <div id="emoji" class="text-6xl"></div>
+            <p id="responseText" class="text-xl text-pink-100 mt-2"></p>
+        </div>
+    </div>
+
+    <script>
+        // Generate floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart-bg';
+            heart.style.left = `${Math.random() * 100}vw`;
+            heart.style.animationDelay = `${Math.random() * 5}s`;
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 8000);
+        }
+
+        // Create hearts at intervals
+        setInterval(createHeart, 500);
+
+        // Button interactions
+        const yesBtn = document.getElementById('yesBtn');
+        const noBtn = document.getElementById('noBtn');
+        const emoji = document.getElementById('emoji');
+        const responseText = document.getElementById('responseText');
+
+        yesBtn.addEventListener('click', () => {
+            emoji.innerHTML = '<span class="emoji happy">😊❤️</span>';
+            responseText.textContent = '';
+            // Add celebratory confetti effect
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'absolute bg-pink-400 w-2 h-2 rounded-full';
+                confetti.style.left = `${Math.random() * 100}vw`;
+                confetti.style.top = '-10px';
+                confetti.style.animation = `fall ${2 + Math.random() * 2}s linear`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 4000);
+            }
+        });
+
+        noBtn.addEventListener('click', () => {
+            emoji.innerHTML = '<span class="emoji cry">😢💔</span>';
+            responseText.textContent = 'I really love you kya nakkaloooo...!';
+            // Add subtle shake effect
+            emoji.style.animation = 'shake 0.5s ease';
+            responseText.style.animation = 'shake 0.5s ease';
+            setTimeout(() => {
+                emoji.style.animation = '';
+                responseText.style.animation = '';
+            }, 500);
+        });
+
+        // Animations for confetti and shake
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes fall {
+                0% { transform: translateY(0) rotate(0deg); }
+                100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                25% { transform: translateX(-10px); }
+                75% { transform: translateX(10px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
